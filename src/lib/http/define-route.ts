@@ -21,6 +21,9 @@ export interface DefineRouteConfig {
 	path: string;
 	mountPath: string;
 	summary: string;
+	description?: string;
+	operationId?: string;
+	deprecated?: boolean;
 	tags: string[];
 	request?: RouteConfig['request'];
 	responses: RouteConfig['responses'];
@@ -40,6 +43,13 @@ export function defineRoute(config: DefineRouteConfig): DefinedRoute {
 		path: config.path,
 		summary: config.summary,
 		tags: config.tags,
+		...(config.description !== undefined
+			? { description: config.description }
+			: {}),
+		...(config.operationId !== undefined
+			? { operationId: config.operationId }
+			: {}),
+		...(config.deprecated !== undefined ? { deprecated: config.deprecated } : {}),
 		...(config.request !== undefined ? { request: config.request } : {}),
 		responses: config.responses,
 	});

@@ -2,6 +2,7 @@ import {
 	OpenAPIRegistry,
 	OpenApiGeneratorV31,
 } from '@asteasolutions/zod-to-openapi';
+import { openApiDocumentConfig } from '../shared/openapi/document-config.js';
 
 export const registry = new OpenAPIRegistry();
 
@@ -10,13 +11,5 @@ export function generateOpenAPIDocument(): ReturnType<
 > {
 	const generator = new OpenApiGeneratorV31(registry.definitions);
 
-	return generator.generateDocument({
-		openapi: '3.1.0',
-		info: {
-			title: 'Demo API',
-			version: '1.0.0',
-			description: 'Self-documented API powered by Zod + OpenAPI.',
-		},
-		servers: [{ url: '/api' }],
-	});
+	return generator.generateDocument(openApiDocumentConfig);
 }
