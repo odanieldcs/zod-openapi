@@ -5,6 +5,7 @@ import { UserSchema } from './user.schema.js';
 export const PaginatedUsersSchema = paginatedResponse(
 	UserSchema,
 	'PaginatedUsers',
+	{ description: 'Paginated list of user accounts.' },
 );
 
 registry.register('PaginatedUsers', PaginatedUsersSchema);

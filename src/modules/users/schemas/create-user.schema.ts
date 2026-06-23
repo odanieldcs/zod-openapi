@@ -5,7 +5,10 @@ import { UserSchema } from './user.schema.js';
 export const CreateUserSchema = UserSchema.omit({
 	id: true,
 	createdAt: true,
-}).openapi('CreateUser');
+}).openapi('CreateUser', {
+	description:
+		'Payload required to create a new user. Server assigns id and createdAt.',
+});
 
 export type CreateUserInput = z.infer<typeof CreateUserSchema>;
 
