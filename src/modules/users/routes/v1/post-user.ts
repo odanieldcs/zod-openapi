@@ -1,19 +1,26 @@
 import { defineRoute } from '../../../../lib/http/define-route.js';
 import { HttpStatusCodes } from '../../../../shared/errors/index.js';
-import { ValidationErrorSchema } from '../../../../shared/schemas/validation-error.schema.js';
+import { ValidationErrorResponse } from '../../../../shared/openapi/response-components.js';
+import { usersOpenApi } from '../../openapi.js';
 import { CreateUserSchema } from '../../schemas/create-user.schema.js';
 import { UserSchema } from '../../schemas/user.schema.js';
 import { createUserService } from '../../services/create-user.js';
 
 export const postUserRoute = defineRoute({
+	...usersOpenApi.operations.createUser,
 	method: 'post',
 	path: '/users',
 	mountPath: '/',
-	summary: 'Create a new user',
-	tags: ['Users'],
+	tags: [usersOpenApi.tag],
 	request: {
 		body: {
-			content: { 'application/json': { schema: CreateUserSchema } },
+			description: 'Fields required to create a user',
+			content: {
+				'application/json': {
+					schema: CreateUserSchema,
+					example: usersOpenApi.examples.createUserRequest,
+				},
+			},
 			required: true,
 		},
 	},
@@ -22,10 +29,7 @@ export const postUserRoute = defineRoute({
 			description: 'User created',
 			content: { 'application/json': { schema: UserSchema } },
 		},
-		[HttpStatusCodes.BAD_REQUEST]: {
-			description: 'Invalid request data',
-			content: { 'application/json': { schema: ValidationErrorSchema } },
-		},
+		[HttpStatusCodes.BAD_REQUEST]: ValidationErrorResponse.ref,
 	},
 	validate: { body: CreateUserSchema },
 	handler: (req) => createUserService(req.body),
