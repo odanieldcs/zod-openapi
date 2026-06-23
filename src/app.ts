@@ -1,6 +1,7 @@
 import './lib/zod.js';
 import './shared/schemas/error.schema.js';
 import './shared/schemas/validation-error.schema.js';
+import './shared/openapi/response-components.js';
 
 import { apiReference } from '@scalar/express-api-reference';
 import express from 'express';
